@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>計算</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+ 
+        .numBox {
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+    <div id="box"></div>
+    <br>
+    <span>總得分<span>
+    <div id="zjbox"></div>
+    <br>
+    <br>
+    <h2>總得分<h2>
+    <div id="zjbox10"></div>    
+    <br>
+    <a href="https://bo.io.gov.mo/bo/i/2022/28/despseg_cn.asp#84">批示</a>
+<!-- <tag attribute='Value' attribute2='Value2'>批示</tag> -->
+</body>
+<script>
+    let arr = [{ id: 1, name: "DF 代表擔任職務時的表現", num: 5,price:1,dzj:0 ,lv:1},
+                { id: 2, name: "AD 代表工作表現評核", num: 0,price:1.5,dzj:0,lv:1},
+                { id: 3, name: "TP 代表在職位上的停留時間", num: 0,price:1.8,dzj:0,lv:10},                
+                { id: 4, name: "PC 代表知識評估測試的成績", num: 0,price:1,dzj:0,lv:1},        
+                { id: 5, name: "CE 代表面試的成績", num: 0,price:1,dzj:0,lv:1},               
+                { id: 6, name: "LV 代表開展晉升程序時在所擔任的職位上獲給予的獎章、勳章或嘉獎", num: 0,price:2.2,dzj:0,lv:1},               
+                { id: 7, name: "HA 代表學歷，視乎緊接較高職位的職務內容", num: 60,price:1.5,dzj:0,lv:10}                       ];
+    htmlFn(arr);
+    function add(data) {
+        arr.map((item) => {
+            if (item.id == data) {
+                item.num=item.num+item.lv;
+            }
+        })
+        htmlFn(arr);
+    }
+    function reduce(data) {
+        arr.map((item) => {
+            if (item.id == data) {
+                if (item.num == 0) { //防止 数量 为负数
+                    return
+                }
+                item.num=item.num-item.lv;
+            }
+        })
+        htmlFn(arr);
+    }
+    function htmlFn(arr) {
+        let box = document.getElementById("box");
+        let zjbox=document.getElementById("zjbox");
+        let boxHtml = "";
+        let zj=0; //所有商品总价
+        for (var i = 0; i < arr.length; i++) {
+            let dzj=arr[i].num*arr[i].price; //单个商品总价
+            zj+=dzj; 
+            arr[i].dzj=dzj;
+            boxHtml += `
+           <div>
+             <span>評分項：${arr[i].name}</span>
+             <span>系數：${arr[i].price}</span>
+             <div class="numBox">
+                数量：
+                <button onclick='reduce(${arr[i].id})' >-</button>
+                <input value=${arr[i].num} type="number" />
+                <button onclick='add(${arr[i].id})'>+</button>
+             </div>
+             <span>單項得分：${dzj}</span>
+            </div>
+        `
+        };
+        box.innerHTML = boxHtml;
+
+        zjbox.innerText=zj;
+        zjbox10.innerText=zj/10;
+
+    }
+</script>
+</html>
